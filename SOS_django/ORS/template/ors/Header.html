@@ -1,0 +1,156 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<!--Used for icon-->
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+{%load static%}
+<script src="{%static "jquery-1.12.4.js"%}"></script>
+<script src="{%static "jquery-ui.js"%}"></script>
+<link rel="stylesheet" href="{%static "jquery-ui.css"%}">
+<script>
+	$(function() {
+		$("#datepicker").datepicker({
+			changeMonth : true,
+			changeYear : true,
+			//dateFormat : 'yy/mm/dd',
+			yearRange:"-57:-18",
+			defaultDate : "2020/01/01/",
+		});
+	});
+	
+	$(function(){
+		$("#datesun").datepicker({
+			 beforeShowDay:
+				function(dt){
+				return[dt.getDay()==0 ? false:true]     ///// to disable sunday
+			}, 
+			changeMonth:true,
+			changeYear:true,
+			stepMonths: 12,
+			yearRange:'+0:+5',
+			yearRange:"+10:"
+			
+			//defaultDate:"2019/01/01"
+		});	
+	});
+	$(function(){
+		$("#datefac").datepicker({
+			 beforeShowDay:
+				function(dt){
+				return[dt.getDay()==0 ? false:true]     ///// to disable sunday
+			}, 
+			changeMonth:true,
+			changeYear:true,
+			yearRange:"-57:+0",	
+			defaultDate:"2018/01/01"
+			//defaultDate:"01/01/1999"
+		});	
+	}); 
+	
+    function selectAll(source) {
+    	checkboxes = document.getElementsByName('ids');
+    	for (var i = 0, n = checkboxes.length; i < n; i++) {
+    		checkboxes[i].checked = source.checked;
+    	}
+    }
+    
+    function selectone(so) {
+    	checkboxes = document.getElementById('mainbox');
+    	unbox = document.getElementsByName('ids');
+    	var box = false;
+    	for (var i = 0, n = unbox.length; i < n; i++) {
+    		if (unbox[i].checked == true) {
+    			box = true;
+    		} else {
+    			box = false;
+    			break;
+    		}
+    	}
+    	checkboxes.checked = box;
+    }
+</script>
+<nav  class="navbar navbar-expand-lg navbar-dark bg-dark">
+    {% if request.session.name != "" and request.session.name != "Admin" and request.session.name != "Student" %}
+    <a class="navbar-brand" href="/ORS/Login">NCS</a>
+    <a class="navbar-brand"   href="/ORS/Registration">Registration</a>    
+    {% endif %}
+        
+    <div class="collapse navbar-collapse" id="navbarToggler">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            {% if request.session.name == ""%}
+            <li class="nav-item">
+                <a class="nav-link" href="/auth/Login">Login</a>
+            </li>
+            {% elif request.session.name == "Admin" %}
+            <li class="nav-item">
+                <a class="nav-link" style="margin-right: 150px;"></a>
+            </li>            
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/User">User   
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/UserList">UserList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/College">College</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/CollegeList">CollegeList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Course">Course</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/CourseList">CourseList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Marksheet">Marksheet</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/MarksheetList">MarksheetList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Role">Role</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/RoleList">RoleList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Student">Student</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/StudentList">StudentList</a>
+            </li>
+            <div class="dropdown">
+                <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{request.session.name}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Edit My Profile</a>
+                  <a class="dropdown-item" href="/ORS/ChangePassword">Change Password</a>
+                  <a class="dropdown-item" href="/auth/Logout">Logout</a>
+                
+                </div>
+
+            {% elif request.session.name == "Student"%}
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/MarksheetList">MarksheetList</a>
+            </li>            
+            <div class="dropdown">
+                <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  User
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Edit My Profile</a>
+                  <a class="dropdown-item" href="/ORS/ChangePassword">Change Password</a>
+                  <a class="dropdown-item" href="/auth/Logout">Logout</a>                
+                </div>
+
+            {% endif %}
+              </div>
+
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,159 @@
+{% include  "./Header.html"%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        txt=""
+    $('#select_all').on('click',function(){
+        if(this.checked){
+            $('.checkbox').each(function(){
+                this.checked = true;
+                txt=$(this).val();
+            });
+        }else{
+             $('.checkbox').each(function(){
+                this.checked = false;
+                txt=$(this).val();
+            });
+        }
+    });
+    $('.checkbox').on('click',function()
+    {
+        if($('.checkbox:checked').length == $('.checkbox').length){
+            $('#select_all').prop('checked',true);
+            txt=$(this).val();
+
+        }else{
+            $('#select_all').prop('checked',false);
+            txt=$(this).val();
+        }
+    });
+    $('#ids').val(txt)
+});
+</script>
+<br>
+<div class="container">
+    <form method="POST">
+        <div>
+            <H2>User List</H2>
+        </div>
+        <div class="col-sm-4 text-right" style="color: white">
+        </div>
+        <div class="form-group row">
+
+            <div class="col-lg-2">
+                <input class="form-control" name="firstName" value="{{form.firstName}}" placeholder="First Name">
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" name="login" value="{{form.login}}" placeholder="Login">
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" name="mobileNumber" value="{{form.mobileNumber}}" placeholder="Mobile">
+            </div>
+            <div class="col-lg-1">
+                <button class="btn btn-primary" type="submit" name="operation" value="search" >Search
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="col-lg-2">
+                <a href="/ORS/User">
+                    <font class="btn btn-success " data-target="#update" data-toggle="modal">ADD<i class="fas fa-plus-circle"></i></font>
+                </a>        
+            </div>
+                       <div class="col-lg-3">
+                <label for="pageno">PageNo: </label>
+               <!-- <select class="form-control inline" name="pageNo" id="pageNo" style="width: 65px; display: inline;" >
+                    {% for pageNo in pageCount %}
+                    <option value="{{pageNo}}">{{pageNo}}
+                    </option>
+                    {% endfor %}
+                </select>-->
+                <select class="form-control inline" name="pageNo" id="pageNo" style="display: inline;width: 65px; " >
+                    {% for i in pageList.paginator.page_range %}
+                    <option value="{{i}}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-success btn-sm" id="goto" name="goto" style=" margin-bottom: 6px;height: 34px; "
+                        value="Go">
+                    Go
+                </button>
+                {% if pageList.has_previous %}
+                <button type="submit" 
+                        class="btn btn-success btn-sm inline" id="previous" name="previous" value="{{ pageList.next_page_number }}"  style=" margin-bottom: 6px;height: 34px; ">
+                    <<
+                </button>
+                {% else %}
+                <button type="" 
+                        class="btn btn-success btn-sm inline" id="previous" disabled="true" name="previous" style=" margin-bottom: 6px;height: 34px; ">
+                    <<
+                </button>
+        {% endif %}
+
+                {% if pageList.has_next %}
+                <button type="submit" 
+                class="btn btn-success btn-sm inline" id="next" name="next" value="{{ pageList.next_page_number }}"  style=" margin-bottom: 6px;height: 34px;">
+            >>
+        </button>
+                {% else %}
+                <button type="" 
+                class="btn btn-success btn-sm inline" id="next" name="next" disabled="true" style=" margin-bottom: 6px;height: 34px; ">
+            >>
+        </button>
+        {% endif %}
+            </div>
+
+        <!--</form>-->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-sm table-bordered table-hover table-responsive-sm">
+            <thead class="thead-dark">
+                <th><input type="checkbox" id="select_all"
+                    onchange="selectAll(this)">Select All</th>
+                <!--<th scope="row">#</th>-->
+                <th scope="row">FIRST_NAME
+                </th>
+                <th scope="row">LAST_NAME
+                </th>
+                <th scope="row">LOGIN
+                </th>
+                <th scope="row">DATE_OF_BIRTH
+                </th>
+                <th scope="row">MOBILE_NO
+                </th>
+                <th scope="row">GENDER
+                </th>
+                <th scope="row">EDIT</th>
+            </thead>
+            <tbody>
+                {% for e in pageList %}
+                <td><input type="checkbox" name="ids" class="checkbox"
+                    onchange="selectone(this)"  value="{{e.id}}"></td>
+                <!--<td>{{e.id}}</td>-->
+                <td>{{e.firstName}}</td>
+                <td>{{e.lastName}}</td>
+                <td>{{e.login}}</td>
+                <td>{{e.dob}}</td>
+                <td>{{e.mobileNumber}}</td>
+                <td>{{e.gender}}</td>
+                <td>
+                    <a href="/ORS/User/edit/{{e.id}}">Edit
+                        <i class="fas fa-edit">
+                        </i>
+                    </a>
+                </td>
+            </tr>
+                {% endfor %}
+            </tbody>
+       </table>
+    </div>
+    <input type="submit" name="operation" value="Delete">
+</div>
+</form>
+<!--
+<td>
+    <a href="/ORS/UserList/delete/{{e.id}}">Delete
+        <i class="fas fa-trash">
+        </i>
+    </a>
+</td>             
+-->    
